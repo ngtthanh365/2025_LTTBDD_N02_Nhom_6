@@ -1,0 +1,125 @@
+import 'package:flutter/material.dart';
+
+class ModauScreen extends StatelessWidget {
+  const ModauScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final Gradient bgGradient = const LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        Color.fromARGB(255, 4, 102, 239), 
+        Color.fromARGB(255, 60, 160, 222), 
+        Color.fromARGB(255, 218, 227, 234), 
+      ],
+      stops: [0.0, 0.6, 1.0],
+    );
+
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: SafeArea(
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: bgGradient,
+            borderRadius: BorderRadius.circular(28),
+          ),
+          child: Stack(
+            children: [
+              // Positioned illustration near top
+              Positioned(
+                top: 35,
+                left: 0,
+                right: 0,
+                child: Column(
+                  children: [
+                    // if image is too large: adjust width
+                    Image.asset(
+                      'assets/imgs/icon1.png',
+                      width: 400,
+                      height: 400,
+                      fit: BoxFit.contain,
+                    ),
+                  ],
+                ),
+              ),
+
+              // Content at bottom: title + button
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 36.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Title: 2 lines, different styles
+                      Text(
+                        'Ứng Dụng Dự Báo',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 38,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 0.5,
+                          shadows: [
+                            Shadow(
+                              color: Colors.black.withOpacity(0.25),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            )
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 6),
+                      Text(
+                        'Thời Tiết',
+                        style: TextStyle(
+                          color: const Color(0xFFFFC107), // warm yellow
+                          fontSize: 40,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.6,
+                        ),
+                      ),
+
+                      const SizedBox(height: 28),
+
+                      // CTA button
+                      SizedBox(
+                        width: 200,
+                        height: 52,
+                        child: ElevatedButton(
+                          onPressed: () {
+                             // chuyển sang màn hình giới thiệu 1
+                            Navigator.pushNamed(context, '/gioithieu1');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFF3C200), // yellow
+                            elevation: 8,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                            shadowColor: Colors.black.withOpacity(0.3),
+                          ),
+                          child: const Text(
+                            'Bắt Đầu',
+                            style: TextStyle(
+                              color: Color(0xFF2A2A6A), // dark text on yellow
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Optional: small status text top-left (time) or top safe area notch space
+              // We skip system UI decorations; Flutter will handle in SafeArea.
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
