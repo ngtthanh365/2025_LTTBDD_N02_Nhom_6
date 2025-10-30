@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class XacDinhViTriScreen extends StatelessWidget {
   const XacDinhViTriScreen({super.key});
 
-   @override
+  @override
   Widget build(BuildContext context) {
     final Gradient bgGradient = const LinearGradient(
       begin: Alignment.topCenter,
@@ -26,14 +26,12 @@ class XacDinhViTriScreen extends StatelessWidget {
           ),
           child: Stack(
             children: [
-                    
               const SizedBox(height: 100),
               Padding(
                 padding: const EdgeInsets.only(top: 100, left: 16, right: 16),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(20),
                   child: SizedBox(
-
                     height: 250,
                     width: double.infinity,
                     child: InteractiveViewer(
@@ -50,7 +48,7 @@ class XacDinhViTriScreen extends StatelessWidget {
               ),
 
               const SizedBox(height: 40),
-              
+
               Positioned(
                 top: 20,
                 left: 20,
@@ -65,7 +63,7 @@ class XacDinhViTriScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               const Positioned(
                 top: 20,
                 left: 0,
@@ -81,16 +79,21 @@ class XacDinhViTriScreen extends StatelessWidget {
                   ),
                 ),
               ),
+
               /// Nội dung
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 40,
+                  ),
                   decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(250)),
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(250),
+                    ),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -98,10 +101,11 @@ class XacDinhViTriScreen extends StatelessWidget {
                       const Text(
                         "Xác Định Vị Trí Của Bạn\n",
                         style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 60, 160, 222)),
-                            textAlign: TextAlign.center,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 60, 160, 222),
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 8),
                       Text(
@@ -116,14 +120,16 @@ class XacDinhViTriScreen extends StatelessWidget {
                       const SizedBox(height: 40),
 
                       /// Button -> sang main app
-                                   // Nút xác nhận vị trí
+                      // Nút xác nhận vị trí
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, '/thoitiet');
+                          Navigator.pushNamed(context, '/thoitietchinh');
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 40, vertical: 14),
+                            horizontal: 40,
+                            vertical: 14,
+                          ),
                           decoration: BoxDecoration(
                             color: const Color(0xFFFFC107),
                             borderRadius: BorderRadius.circular(30),
@@ -138,7 +144,6 @@ class XacDinhViTriScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),
