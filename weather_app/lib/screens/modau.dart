@@ -22,7 +22,6 @@ class ModauScreen extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             gradient: bgGradient,
-            borderRadius: BorderRadius.circular(28),
           ),
           child: Stack(
             children: [

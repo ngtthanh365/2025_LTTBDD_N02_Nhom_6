@@ -22,7 +22,6 @@ class GioiThieu1Screen extends StatelessWidget {
         child: Container(
           decoration: BoxDecoration(
             gradient: bgGradient,
-            borderRadius: BorderRadius.circular(28),
           ),
           child: Stack(
             children: [
@@ -55,17 +54,24 @@ class GioiThieu1Screen extends StatelessWidget {
                 ),
               ),
 
-              const Positioned(
+              Positioned(
                 top: 20,
                 right: 20,
-                child: Text(
-                  "Bỏ qua",
-                  style: TextStyle(
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/xacdinhvitri');
+                  },
+                  child: const Text(
+                    "Bỏ qua",
+                    style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
-                      fontWeight: FontWeight.w600),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                 ),
               ),
+
 
               /// Nội dung
               Align(
