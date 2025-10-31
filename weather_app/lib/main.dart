@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/screens/bando_nhietdo.dart';
 import 'package:weather_app/screens/thoitietchinh.dart';
 import 'package:weather_app/screens/xacdinhvitri.dart';
 
@@ -31,6 +32,7 @@ class MyApp extends StatelessWidget {
         '/gioithieu4': (context) => const GioiThieu4Screen(), // màn 5
         '/xacdinhvitri': (context) => const XacDinhViTriScreen(),
         '/thoitietchinh': (context) => const WeatherScreen(),
+        '/bando_nhietdo': (context) => const BanDoNhietDo(),
         // '/home': (context) => const HomeScreen(), // nếu sau này cần
       },
       theme: ThemeData(useMaterial3: true),

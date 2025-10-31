@@ -124,7 +124,7 @@ class WeatherScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // ☀️ Icon chính của hôm nay (tự đổi theo giờ)
+                    // ☀️ Icon chính hôm nay
                     Image.asset(
                       todayIcon,
                       height: size.height * 0.36,
@@ -233,7 +233,6 @@ class WeatherScreen extends StatelessWidget {
                                     ((today['maxTemp'] - today['minTemp']) *
                                             (i / 23))
                                         .round();
-
                                 final hourIcon = (i >= 6 && i < 18)
                                     ? "assets/imgs/gioithieu2.png"
                                     : "assets/imgs/gioithieu1.png";
@@ -251,7 +250,6 @@ class WeatherScreen extends StatelessWidget {
                     ),
 
                     const SizedBox(height: 30),
-
                     // 📆 Dự báo 10 ngày
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -290,6 +288,70 @@ class WeatherScreen extends StatelessWidget {
                       ),
                     ),
 
+                    const SizedBox(height: 30),
+
+                    // 🔲 Ô thông tin thời tiết nhỏ (mới thêm)
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      child: GridView.count(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: const [
+                          WeatherInfoCard(
+                            title: "CẢM NHẬN",
+                            value: "24°",
+                            subtitle: "Mưa phùn nhẹ",
+                            icon: Icons.thermostat,
+                          ),
+                          WeatherInfoCard(
+                            title: "CHỈ SỐ UV",
+                            value: "3",
+                            subtitle: "Trung bình",
+                            icon: Icons.wb_sunny_outlined,
+                          ),
+                          WeatherInfoCard(
+                            title: "GIÓ",
+                            value: "9 km/h",
+                            subtitle: "Hướng: 341° BTB",
+                            icon: Icons.air,
+                          ),
+                          WeatherInfoCard(
+                            title: "MẶT TRỜI LẶN",
+                            value: "17:22",
+                            subtitle: "Mọc: 05:58",
+                            icon: Icons.wb_twilight,
+                          ),
+                          WeatherInfoCard(
+                            title: "LƯỢNG MƯA",
+                            value: "3 mm",
+                            subtitle: "Dự báo: 17 mm / 24h tới",
+                            icon: Icons.water_drop_outlined,
+                          ),
+                          WeatherInfoCard(
+                            title: "TẦM NHÌN",
+                            value: "15 km",
+                            subtitle: "Tầm nhìn rõ.",
+                            icon: Icons.remove_red_eye_outlined,
+                          ),
+                          WeatherInfoCard(
+                            title: "ĐỘ ẨM",
+                            value: "85%",
+                            subtitle: "Điểm sương 21°",
+                            icon: Icons.grain_outlined,
+                          ),
+                          WeatherInfoCard(
+                            title: "ÁP SUẤT",
+                            value: "1009 hPa",
+                            subtitle: "Ổn định",
+                            icon: Icons.speed_outlined,
+                          ),
+                        ],
+                      ),
+                    ),
+
                     const SizedBox(height: 100),
                   ],
                 ),
@@ -297,7 +359,7 @@ class WeatherScreen extends StatelessWidget {
             ),
           ),
 
-          // ✅ Thanh 3 icon nổi (đã sửa thành nút bấm)
+          // ✅ Thanh 3 icon nổi (nút bấm)
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
@@ -328,14 +390,8 @@ class WeatherScreen extends StatelessWidget {
                         color: Colors.white,
                         size: 30,
                       ),
-
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
-                          ),
-                        );
+                         Navigator.pushNamed(context, '/bando_nhietdo');
                       },
                     ),
                     IconButton(
@@ -483,6 +539,57 @@ class DailyForecastRow extends StatelessWidget {
           Text(
             "$maxTemp°",
             style: const TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// 🧩 Thêm class WeatherInfoCard
+class WeatherInfoCard extends StatelessWidget {
+  final String title;
+  final String value;
+  final String subtitle;
+  final IconData icon;
+
+  const WeatherInfoCard({
+    super.key,
+    required this.title,
+    required this.value,
+    required this.subtitle,
+    required this.icon,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white24, width: 1),
+      ),
+      padding: const EdgeInsets.all(14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon, color: Colors.white70, size: 28),
+          const SizedBox(height: 8),
+          Text(
+            title,
+            style: const TextStyle(color: Colors.white70, fontSize: 13),
+          ),
+          Text(
+            value,
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          Text(
+            subtitle,
+            style: const TextStyle(color: Colors.white60, fontSize: 12),
           ),
         ],
       ),
