@@ -1,6 +1,66 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
+// ⚡ Thêm các trang mẫu để điều hướng
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.blue[900],
+      appBar: AppBar(
+        title: const Text("Trang chủ"),
+        backgroundColor: Colors.blue[700],
+      ),
+      body: const Center(
+        child: Text("Đây là trang chủ", style: TextStyle(color: Colors.white)),
+      ),
+    );
+  }
+}
+
+class ForecastPage extends StatelessWidget {
+  const ForecastPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.blue[900],
+      appBar: AppBar(
+        title: const Text("Dự báo 10 ngày"),
+        backgroundColor: Colors.blue[700],
+      ),
+      body: const Center(
+        child: Text(
+          "Trang dự báo 10 ngày",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    );
+  }
+}
+
+class SettingsPage extends StatelessWidget {
+  const SettingsPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.blue[900],
+      appBar: AppBar(
+        title: const Text("Cài đặt"),
+        backgroundColor: Colors.blue[700],
+      ),
+      body: const Center(
+        child: Text("Trang cài đặt", style: TextStyle(color: Colors.white)),
+      ),
+    );
+  }
+}
+
+// ------------------ TRANG CHÍNH ------------------
+
 class WeatherScreen extends StatelessWidget {
   const WeatherScreen({super.key});
 
@@ -9,13 +69,11 @@ class WeatherScreen extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     final now = DateTime.now();
 
-    // 🔆 Xác định ban ngày / ban đêm để đổi icon tự động
     final isDayTime = now.hour >= 6 && now.hour < 18;
     final todayIcon = isDayTime
-        ? "assets/imgs/gioithieu2.png" // mặt trời
-        : "assets/imgs/gioithieu1.png"; // mặt trăng
+        ? "assets/imgs/gioithieu2.png"
+        : "assets/imgs/gioithieu1.png";
 
-    // 🌤 Dữ liệu dự báo 10 ngày
     final List<Map<String, dynamic>> forecastData = List.generate(10, (index) {
       final date = now.add(Duration(days: index));
       final day =
@@ -36,7 +94,7 @@ class WeatherScreen extends StatelessWidget {
       };
     });
 
-    final today = forecastData[0]; // ✅ Hôm nay = ngày đầu tiên
+    final today = forecastData[0];
 
     return Scaffold(
       body: Stack(
@@ -74,7 +132,6 @@ class WeatherScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
 
-                    // 🌡️ Nhiệt độ
                     Text(
                       "${today['maxTemp']}°",
                       style: const TextStyle(
@@ -127,7 +184,7 @@ class WeatherScreen extends StatelessWidget {
 
                     const SizedBox(height: 30),
 
-                    // 📅 Hôm nay (24 giờ & đồng bộ)
+                    // 📅 Hôm nay (24 giờ)
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 20),
                       padding: const EdgeInsets.all(16),
@@ -159,8 +216,6 @@ class WeatherScreen extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 12),
-
-                          // ✅ Sinh 24 giờ — tự đổi icon ngày/đêm
                           SizedBox(
                             height: 120,
                             child: ListView.builder(
@@ -179,7 +234,6 @@ class WeatherScreen extends StatelessWidget {
                                             (i / 23))
                                         .round();
 
-                                // ✅ Giờ nào thuộc ban đêm thì dùng icon mặt trăng
                                 final hourIcon = (i >= 6 && i < 18)
                                     ? "assets/imgs/gioithieu2.png"
                                     : "assets/imgs/gioithieu1.png";
@@ -236,78 +290,14 @@ class WeatherScreen extends StatelessWidget {
                       ),
                     ),
 
-                    const SizedBox(height: 30),
-
-                    // 🔲 Ô thông tin nhỏ
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      child: GridView.count(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: const [
-                          WeatherInfoCard(
-                            title: "CẢM NHẬN",
-                            value: "24°",
-                            subtitle: "Mưa phùn nhẹ",
-                            icon: Icons.thermostat,
-                          ),
-                          WeatherInfoCard(
-                            title: "CHỈ SỐ UV",
-                            value: "3",
-                            subtitle: "Trung bình",
-                            icon: Icons.wb_sunny_outlined,
-                          ),
-                          WeatherInfoCard(
-                            title: "GIÓ",
-                            value: "9 km/h",
-                            subtitle: "Hướng: 341° BTB",
-                            icon: Icons.air,
-                          ),
-                          WeatherInfoCard(
-                            title: "MẶT TRỜI LẶN",
-                            value: "17:22",
-                            subtitle: "Mọc: 05:58",
-                            icon: Icons.wb_twilight,
-                          ),
-                          WeatherInfoCard(
-                            title: "LƯỢNG MƯA",
-                            value: "3 mm",
-                            subtitle: "Dự báo: 17 mm / 24h tới",
-                            icon: Icons.water_drop_outlined,
-                          ),
-                          WeatherInfoCard(
-                            title: "TẦM NHÌN",
-                            value: "15 km",
-                            subtitle: "Tầm nhìn rõ.",
-                            icon: Icons.remove_red_eye_outlined,
-                          ),
-                          WeatherInfoCard(
-                            title: "ĐỘ ẨM",
-                            value: "85%",
-                            subtitle: "Điểm sương 21°",
-                            icon: Icons.grain_outlined,
-                          ),
-                          WeatherInfoCard(
-                            title: "ÁP SUẤT",
-                            value: "1009 hPa",
-                            subtitle: "Ổn định",
-                            icon: Icons.speed_outlined,
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 120),
+                    const SizedBox(height: 100),
                   ],
                 ),
               ),
             ),
           ),
 
-          // ✅ Thanh 3 icon nổi
+          // ✅ Thanh 3 icon nổi (đã sửa thành nút bấm)
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
@@ -321,28 +311,63 @@ class WeatherScreen extends StatelessWidget {
                   color: Colors.white.withOpacity(0.15),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: Colors.white24, width: 1),
-                  boxShadow: [
+                  boxShadow: const [
                     BoxShadow(
                       color: Color.fromARGB(255, 76, 163, 218),
                       blurRadius: 8,
-                      offset: const Offset(0, 4),
+                      offset: Offset(0, 4),
                     ),
                   ],
                 ),
-                child: const Row(
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(
-                      Icons.location_on_outlined,
-                      color: Colors.white,
-                      size: 30,
+                    IconButton(
+                      icon: const Icon(
+                        Icons.map,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      },
                     ),
-                    Icon(
-                      Icons.add_circle_outline,
-                      color: Colors.white,
-                      size: 30,
+                    IconButton(
+                      icon: const Icon(
+                        Icons.add_circle_outline,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ForecastPage(),
+                          ),
+                        );
+                      },
                     ),
-                    Icon(Icons.menu, color: Colors.white, size: 30),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.menu,
+                        color: Colors.white,
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SettingsPage(),
+                          ),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
@@ -460,67 +485,6 @@ class DailyForecastRow extends StatelessWidget {
             style: const TextStyle(color: Colors.white, fontSize: 16),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class WeatherInfoCard extends StatelessWidget {
-  final String title;
-  final String value;
-  final String subtitle;
-  final IconData icon;
-  const WeatherInfoCard({
-    super.key,
-    required this.title,
-    required this.value,
-    required this.subtitle,
-    required this.icon,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          padding: const EdgeInsets.all(14),
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.15),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: Colors.white24, width: 1),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Icon(icon, color: Colors.white70, size: 22),
-              const SizedBox(height: 10),
-              Text(
-                title,
-                style: const TextStyle(
-                  color: Colors.white70,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(
-                value,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: const TextStyle(color: Colors.white70, fontSize: 13),
-              ),
-            ],
-          ),
-        ),
       ),
     );
   }
