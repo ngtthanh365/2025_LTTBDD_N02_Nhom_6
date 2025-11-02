@@ -142,9 +142,10 @@ class WeatherScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     const Text(
-                      "Hà Nội",
+                      "Vị trí của tôi",
                       style: TextStyle(color: Colors.white, fontSize: 36),
                     ),
+
                     const SizedBox(height: 6),
                     Text(
                       "Cao: ${today['maxTemp']}°   Thấp: ${today['minTemp']}°",
@@ -391,7 +392,7 @@ class WeatherScreen extends StatelessWidget {
                         size: 30,
                       ),
                       onPressed: () {
-                         Navigator.pushNamed(context, '/bando_nhietdo');
+                        Navigator.pushNamed(context, '/bando_nhietdo');
                       },
                     ),
                     IconButton(
@@ -401,12 +402,7 @@ class WeatherScreen extends StatelessWidget {
                         size: 30,
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ForecastPage(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/timkien_thoitiet');
                       },
                     ),
                     IconButton(

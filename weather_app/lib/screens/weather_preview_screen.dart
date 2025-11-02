@@ -1,0 +1,361 @@
+import 'package:flutter/material.dart';
+import 'thoitietchinh.dart'; 
+
+class WeatherPreviewScreen extends StatelessWidget {
+  final Map<String, dynamic>? city;
+  const WeatherPreviewScreen({super.key, this.city});
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    final now = DateTime.now();
+
+    final isDayTime = now.hour >= 6 && now.hour < 18;
+    final todayIcon = isDayTime
+        ? "assets/imgs/gioithieu2.png"
+        : "assets/imgs/gioithieu1.png";
+
+    final List<Map<String, dynamic>> forecastData = List.generate(10, (index) {
+      final date = now.add(Duration(days: index));
+      final day =
+          "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}";
+
+      final icons = [
+        "assets/imgs/gioithieu2.png",
+        "assets/imgs/rain.png",
+        "assets/imgs/gioithieu3.png",
+      ];
+
+      return {
+        "day": day,
+        "icon": icons[index % icons.length],
+        "rainPercent": [10, 20, 40, 60, 80, 30, 50, 70, 25, 90][index],
+        "minTemp": [21, 22, 24, 23, 20, 21, 22, 25, 23, 21][index],
+        "maxTemp": [28, 30, 33, 29, 25, 27, 28, 34, 30, 26][index],
+      };
+    });
+
+    final today = forecastData[0];
+
+    return Scaffold(
+      body: Stack(
+        children: [
+          // 🌈 Nền gradient
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color.fromARGB(255, 4, 102, 239),
+                  Color.fromARGB(255, 60, 160, 222),
+                  Color.fromARGB(255, 218, 227, 234),
+                ],
+                stops: [0.0, 0.6, 1.0],
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+              ),
+            ),
+          ),
+
+          // ✅ Nội dung cuộn
+          SafeArea(
+            child: Column(
+              children: [
+                // 🔹 Thanh trên cùng: Hủy & Thêm
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white.withOpacity(0.2),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          "Hủy",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                      
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onPressed: () {
+                          // TODO: thêm thành phố vào danh sách
+                        },
+                        child: const Text("Thêm"),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // 🌤 Phần còn lại là giao diện thời tiết
+                Expanded(
+                  child: SingleChildScrollView(
+                    physics: const BouncingScrollPhysics(),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // ☀️ Icon chính hôm nay
+                          Image.asset(
+                            todayIcon,
+                            height: size.height * 0.36,
+                            fit: BoxFit.contain,
+                          ),
+                          const SizedBox(height: 10),
+
+                          Text(
+                            "${today['maxTemp']}°",
+                            style: const TextStyle(
+                              fontSize: 80,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            city?["name"] ?? "Vị trí của tôi",
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 36),
+                          ),
+
+                          const SizedBox(height: 6),
+                          Text(
+                            "Cao: ${today['maxTemp']}°   Thấp: ${today['minTemp']}°",
+                            style: const TextStyle(
+                              color: Colors.white60,
+                              fontSize: 16,
+                            ),
+                          ),
+
+                          const SizedBox(height: 25),
+
+                          // 🏠 Hình nhà
+                          Center(
+                            child: Container(
+                              width: 280,
+                              height: 180,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(22),
+                                border:
+                                    Border.all(color: Colors.white30, width: 2),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.3),
+                                    blurRadius: 10,
+                                    offset: const Offset(0, 6),
+                                  ),
+                                ],
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: Image.asset(
+                                  'assets/imgs/House.png',
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 30),
+
+                          // 📅 Hôm nay (24 giờ)
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(28),
+                              border:
+                                  Border.all(color: Colors.white24, width: 1),
+                            ),
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      "Hôm nay",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    Text(
+                                      today['day'],
+                                      style: const TextStyle(
+                                        color: Colors.white70,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 12),
+                                SizedBox(
+                                  height: 120,
+                                  child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    physics: const BouncingScrollPhysics(),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                    ),
+                                    itemCount: 24,
+                                    itemBuilder: (context, i) {
+                                      final time =
+                                          "${i.toString().padLeft(2, '0')}:00";
+                                      final temp =
+                                          today['minTemp'] +
+                                              ((today['maxTemp'] -
+                                                          today['minTemp']) *
+                                                      (i / 23))
+                                                  .round();
+                                      final hourIcon =
+                                          (i >= 6 && i < 18)
+                                              ? "assets/imgs/gioithieu2.png"
+                                              : "assets/imgs/gioithieu1.png";
+
+                                      return HourlyForecast(
+                                        time: time,
+                                        temp: "$temp°C",
+                                        iconPath: hourIcon,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(height: 30),
+
+                          // 📆 Dự báo 10 ngày
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            padding: const EdgeInsets.all(16),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.1),
+                              borderRadius: BorderRadius.circular(28),
+                              border:
+                                  Border.all(color: Colors.white24, width: 1),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Dự báo 10 ngày",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                const SizedBox(height: 12),
+                                Column(
+                                  children: forecastData
+                                      .map(
+                                        (day) => DailyForecastRow(
+                                          day: day['day'],
+                                          rainPercent: day['rainPercent'],
+                                          minTemp: day['minTemp'],
+                                          maxTemp: day['maxTemp'],
+                                          icon: day['icon'],
+                                        ),
+                                      )
+                                      .toList(),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          const SizedBox(height: 30),
+
+                          // 🔲 Ô thông tin nhỏ
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 20),
+                            child: GridView.count(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
+                              shrinkWrap: true,
+                              physics:
+                                  const NeverScrollableScrollPhysics(),
+                              children: const [
+                                WeatherInfoCard(
+                                  title: "CẢM NHẬN",
+                                  value: "24°",
+                                  subtitle: "Mưa phùn nhẹ",
+                                  icon: Icons.thermostat,
+                                ),
+                                WeatherInfoCard(
+                                  title: "CHỈ SỐ UV",
+                                  value: "3",
+                                  subtitle: "Trung bình",
+                                  icon: Icons.wb_sunny_outlined,
+                                ),
+                                WeatherInfoCard(
+                                  title: "GIÓ",
+                                  value: "9 km/h",
+                                  subtitle: "Hướng: 341° BTB",
+                                  icon: Icons.air,
+                                ),
+                                WeatherInfoCard(
+                                  title: "MẶT TRỜI LẶN",
+                                  value: "17:22",
+                                  subtitle: "Mọc: 05:58",
+                                  icon: Icons.wb_twilight,
+                                ),
+                                WeatherInfoCard(
+                                  title: "LƯỢNG MƯA",
+                                  value: "3 mm",
+                                  subtitle: "Dự báo: 17 mm / 24h tới",
+                                  icon: Icons.water_drop_outlined,
+                                ),
+                                WeatherInfoCard(
+                                  title: "TẦM NHÌN",
+                                  value: "15 km",
+                                  subtitle: "Tầm nhìn rõ.",
+                                  icon: Icons.remove_red_eye_outlined,
+                                ),
+                                WeatherInfoCard(
+                                  title: "ĐỘ ẨM",
+                                  value: "85%",
+                                  subtitle: "Điểm sương 21°",
+                                  icon: Icons.grain_outlined,
+                                ),
+                                WeatherInfoCard(
+                                  title: "ÁP SUẤT",
+                                  value: "1009 hPa",
+                                  subtitle: "Ổn định",
+                                  icon: Icons.speed_outlined,
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(height: 100),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
