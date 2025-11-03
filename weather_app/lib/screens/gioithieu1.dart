@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/l10n/app_localizations.dart';
+import 'package:weather_app/screens/gioithieu2.dart'; // 🔹 Thêm nếu chưa có
 
 class GioiThieu1Screen extends StatelessWidget {
   const GioiThieu1Screen({super.key});
@@ -38,6 +39,7 @@ class GioiThieu1Screen extends StatelessWidget {
                 ),
               ),
 
+              /// Nút quay lại
               Positioned(
                 top: 20,
                 left: 20,
@@ -45,7 +47,7 @@ class GioiThieu1Screen extends StatelessWidget {
                   onTap: () {
                     Navigator.pop(context); // Quay lại trang trước
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_back_ios,
                     color: Colors.white,
                     size: 22,
@@ -53,6 +55,7 @@ class GioiThieu1Screen extends StatelessWidget {
                 ),
               ),
 
+              /// Nút "Bỏ qua"
               Positioned(
                 top: 20,
                 right: 20,
@@ -108,27 +111,47 @@ class GioiThieu1Screen extends StatelessWidget {
                       ),
                       const SizedBox(height: 40),
 
-                      /// Button -> sang main app
+                      /// Nút mũi tên -> sang gioithieu2 (có animation)
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, "/gioithieu2");
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              transitionDuration:
+                                  const Duration(milliseconds: 600),
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) {
+                                return const GioiThieu2Screen();
+                              },
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                const begin = Offset(1.0, 0.0); // từ phải sang
+                                const end = Offset.zero;
+                                const curve = Curves.easeOutCubic;
+
+                                final tween = Tween(
+                                  begin: begin,
+                                  end: end,
+                                ).chain(CurveTween(curve: curve));
+
+                                return SlideTransition(
+                                  position: animation.drive(tween),
+                                  child: child,
+                                );
+                              },
+                            ),
+                          );
                         },
                         child: Container(
                           width: 70,
                           height: 70,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color.fromARGB(
-                              255,
-                              60,
-                              160,
-                              222,
-                            ), // Màu xanh dương nổi bật
+                            color: const Color.fromARGB(255, 60, 160, 222),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withOpacity(0.15),
                                 blurRadius: 8,
-                                offset: Offset(0, 4),
+                                offset: const Offset(0, 4),
                               ),
                             ],
                           ),

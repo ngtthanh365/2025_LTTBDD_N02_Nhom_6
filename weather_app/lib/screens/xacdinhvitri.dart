@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/l10n/app_localizations.dart';
+import 'package:weather_app/screens/thoitietchinh.dart'; // 🔹 Thêm nếu chưa có
 
 class XacDinhViTriScreen extends StatelessWidget {
   const XacDinhViTriScreen({super.key});
@@ -54,7 +55,7 @@ class XacDinhViTriScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.pop(context); // Quay lại trang trước
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_back_ios,
                     color: Colors.white,
                     size: 22,
@@ -109,18 +110,33 @@ class XacDinhViTriScreen extends StatelessWidget {
                       Text(
                         AppLocalizations.of(context)!.locateYouDesc,
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           color: Colors.grey.shade600,
                         ),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 40),
 
-                      /// Button -> sang main app
-                      // Nút xác nhận vị trí
+                      /// 🔹 Nút xác nhận vị trí (đã thêm hiệu ứng fade)
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, '/thoitietchinh');
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              transitionDuration:
+                                  const Duration(milliseconds: 800),
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) {
+                                return const WeatherScreen(); // Màn hình chính
+                              },
+                              transitionsBuilder: (context, animation,
+                                  secondaryAnimation, child) {
+                                return FadeTransition(
+                                  opacity: animation,
+                                  child: child,
+                                );
+                              },
+                            ),
+                          );
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(

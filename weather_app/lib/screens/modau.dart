@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/l10n/app_localizations.dart';
+import 'package:weather_app/screens/gioithieu1.dart'; // 🔹 thêm import này nếu chưa có
 
 class ModauScreen extends StatelessWidget {
   const ModauScreen({super.key});
@@ -31,7 +32,6 @@ class ModauScreen extends StatelessWidget {
                 right: 0,
                 child: Column(
                   children: [
-                    // if image is too large: adjust width
                     Image.asset(
                       'assets/imgs/icon1.png',
                       width: 400,
@@ -89,8 +89,24 @@ class ModauScreen extends StatelessWidget {
                         height: 52,
                         child: ElevatedButton(
                           onPressed: () {
-                            // chuyển sang màn hình giới thiệu 1
-                            Navigator.pushNamed(context, '/gioithieu1');
+                            // 🔹 Thêm hiệu ứng fade transition
+                            Navigator.of(context).push(
+                              PageRouteBuilder(
+                                transitionDuration:
+                                    const Duration(milliseconds: 800),
+                                pageBuilder: (context, animation,
+                                    secondaryAnimation) {
+                                  return const GioiThieu1Screen();
+                                },
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                              ),
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFF3C200), // yellow
@@ -114,9 +130,6 @@ class ModauScreen extends StatelessWidget {
                   ),
                 ),
               ),
-
-              // Optional: small status text top-left (time) or top safe area notch space
-              // We skip system UI decorations; Flutter will handle in SafeArea.
             ],
           ),
         ),

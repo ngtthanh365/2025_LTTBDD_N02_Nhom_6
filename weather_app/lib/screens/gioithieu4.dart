@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/l10n/app_localizations.dart';
+import 'package:weather_app/screens/xacdinhvitri.dart';
 
 class GioiThieu4Screen extends StatelessWidget {
   const GioiThieu4Screen({super.key});
@@ -112,24 +113,53 @@ class GioiThieu4Screen extends StatelessWidget {
                       /// Button -> sang main app
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(context, "/xacdinhvitri");
+                          Navigator.of(context).push(
+                            PageRouteBuilder(
+                              transitionDuration: const Duration(
+                                milliseconds: 600,
+                              ),
+                              pageBuilder:
+                                  (context, animation, secondaryAnimation) {
+                                    return const XacDinhViTriScreen();
+                                  },
+                              transitionsBuilder:
+                                  (
+                                    context,
+                                    animation,
+                                    secondaryAnimation,
+                                    child,
+                                  ) {
+                                    const begin = Offset(
+                                      1.0,
+                                      0.0,
+                                    ); // từ phải sang
+                                    const end = Offset.zero;
+                                    const curve = Curves.easeOutCubic;
+
+                                    final tween = Tween(
+                                      begin: begin,
+                                      end: end,
+                                    ).chain(CurveTween(curve: curve));
+
+                                    return SlideTransition(
+                                      position: animation.drive(tween),
+                                      child: child,
+                                    );
+                                  },
+                            ),
+                          );
                         },
                         child: Container(
                           width: 70,
                           height: 70,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color.fromARGB(
-                              255,
-                              60,
-                              160,
-                              222,
-                            ), // Màu xanh dương nổi bật
+                            color: const Color.fromARGB(255, 60, 160, 222),
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withOpacity(0.15),
                                 blurRadius: 8,
-                                offset: Offset(0, 4),
+                                offset: const Offset(0, 4),
                               ),
                             ],
                           ),

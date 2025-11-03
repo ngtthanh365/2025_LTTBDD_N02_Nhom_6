@@ -18,6 +18,8 @@ class _BanDoNhietDoState extends State<BanDoNhietDo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: const Color(0xFF002B5B),
+        elevation: 2,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 22),
           onPressed: () {
@@ -26,11 +28,14 @@ class _BanDoNhietDoState extends State<BanDoNhietDo> {
         ),
         title: Text(
           AppLocalizations.of(context)!.mapTitle,
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+          ),
         ),
-        centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 60, 160, 222),
-        elevation: 2, // tạo hiệu ứng nổi nhẹ
+        centerTitle: false, // ✅ Cho phép tiêu đề lệch trái (gần icon)
+        titleSpacing: -8, // ✅ Giảm khoảng cách giữa icon và chữ
       ),
       body: Stack(
         children: [
@@ -140,7 +145,7 @@ class _BanDoNhietDoState extends State<BanDoNhietDo> {
                 FloatingActionButton.small(
                   heroTag: 'temp',
                   backgroundColor: selectedLayer == 'temp'
-                      ? Color.fromARGB(255, 60, 160, 222)
+                      ? Color(0xFF002B5B)
                       : Colors.grey.shade700,
                   onPressed: () => setState(() => selectedLayer = 'temp'),
                   child: const Icon(Icons.thermostat, color: Colors.white),
@@ -150,7 +155,7 @@ class _BanDoNhietDoState extends State<BanDoNhietDo> {
                 FloatingActionButton.small(
                   heroTag: 'clouds',
                   backgroundColor: selectedLayer == 'clouds'
-                      ? Color.fromARGB(255, 60, 160, 222)
+                      ? Color(0xFF002B5B)
                       : Colors.grey.shade700,
                   onPressed: () => setState(() => selectedLayer = 'clouds'),
                   child: const Icon(Icons.cloud, color: Colors.white),
@@ -160,7 +165,7 @@ class _BanDoNhietDoState extends State<BanDoNhietDo> {
                 FloatingActionButton.small(
                   heroTag: 'precipitation',
                   backgroundColor: selectedLayer == 'precipitation'
-                      ? Color.fromARGB(255, 60, 160, 222)
+                      ? Color(0xFF002B5B)
                       : Colors.grey.shade700,
                   onPressed: () =>
                       setState(() => selectedLayer = 'precipitation'),
@@ -171,7 +176,7 @@ class _BanDoNhietDoState extends State<BanDoNhietDo> {
                 FloatingActionButton.small(
                   heroTag: 'wind',
                   backgroundColor: selectedLayer == 'wind'
-                      ? Color.fromARGB(255, 60, 160, 222)
+                      ? Color(0xFF002B5B)
                       : Colors.grey.shade700,
                   onPressed: () => setState(() => selectedLayer = 'wind'),
                   child: const Icon(Icons.air, color: Colors.white),

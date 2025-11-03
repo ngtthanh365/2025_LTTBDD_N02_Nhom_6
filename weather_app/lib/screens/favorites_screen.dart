@@ -55,8 +55,10 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     }
 
     return Scaffold(
-      backgroundColor: Colors.blue[900],
+      backgroundColor: Color(0xFF002B5B),
       appBar: AppBar(
+        backgroundColor: const Color(0xFF002B5B),
+        elevation: 2,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios, color: Colors.white, size: 22),
           onPressed: () {
@@ -65,11 +67,14 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         ),
         title: Text(
           AppLocalizations.of(context)!.FavoritesCity,
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+            fontSize: 20,
+          ),
         ),
-        centerTitle: true,
-        backgroundColor: const Color.fromARGB(255, 60, 160, 222),
-        elevation: 2,
+        centerTitle: false, // ✅ Cho phép tiêu đề lệch trái (gần icon)
+        titleSpacing: -8, // ✅ Giảm khoảng cách giữa icon và chữ
       ),
       body: Container(
         child: SafeArea(
