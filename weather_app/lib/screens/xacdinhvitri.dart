@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/l10n/app_localizations.dart';
 
 class XacDinhViTriScreen extends StatelessWidget {
   const XacDinhViTriScreen({super.key});
@@ -20,9 +21,7 @@ class XacDinhViTriScreen extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Container(
-          decoration: BoxDecoration(
-            gradient: bgGradient,
-          ),
+          decoration: BoxDecoration(gradient: bgGradient),
           child: Stack(
             children: [
               const SizedBox(height: 100),
@@ -63,14 +62,14 @@ class XacDinhViTriScreen extends StatelessWidget {
                 ),
               ),
 
-              const Positioned(
+              Positioned(
                 top: 20,
                 left: 0,
                 right: 0,
                 child: Center(
                   child: Text(
-                    "Chọn vị trí",
-                    style: TextStyle(
+                    AppLocalizations.of(context)!.chooseLocationTitle,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -97,9 +96,9 @@ class XacDinhViTriScreen extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        "Xác Định Vị Trí Của Bạn\n",
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context)!.locateYouTitle,
+                        style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                           color: Color.fromARGB(255, 60, 160, 222),
@@ -108,8 +107,7 @@ class XacDinhViTriScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "Ứng dụng sẽ hiển thị thời tiết tương ứng với vị trí của bạn.\n"
-                        "Nhấn Xác nhận để tiếp tục.",
+                        AppLocalizations.of(context)!.locateYouDesc,
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey.shade600,
@@ -133,9 +131,9 @@ class XacDinhViTriScreen extends StatelessWidget {
                             color: const Color(0xFFFFC107),
                             borderRadius: BorderRadius.circular(30),
                           ),
-                          child: const Text(
-                            'Xác nhận vị trí',
-                            style: TextStyle(
+                          child: Text(
+                            AppLocalizations.of(context)!.confirmLocation,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 16,
                               fontWeight: FontWeight.bold,

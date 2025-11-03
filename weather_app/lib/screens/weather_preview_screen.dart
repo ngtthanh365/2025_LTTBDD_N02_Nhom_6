@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'thoitietchinh.dart';
 import 'city_notifier.dart';
+import 'package:weather_app/l10n/app_localizations.dart';
 
 class WeatherPreviewScreen extends StatelessWidget {
   final Map<String, dynamic>? city;
@@ -11,40 +12,77 @@ class WeatherPreviewScreen extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     final now = DateTime.now();
 
-    // ✅ Xác định ngày/đêm
     final isDayTime = now.hour >= 6 && now.hour < 18;
 
-    // ✅ Nếu city có icon riêng thì dùng, nếu không thì dùng icon mặc định
     final String cityIcon =
         city?['icon'] ??
         (isDayTime
-            ? "assets/imgs/gioithieu2.png"
-            : "assets/imgs/gioithieu1.png");
+            ? 'assets/imgs/gioithieu2.png'
+            : 'assets/imgs/gioithieu1.png');
 
-    // ✅ Nếu city có temp thì lấy, còn không thì dùng dữ liệu mẫu
     final int temp = city?['temp'] ?? 28;
     final int minTemp = city?['min'] ?? 21;
     final int maxTemp = city?['max'] ?? 30;
-    final String status = city?['status'] ?? "Nhiều mây - 28°C";
+    // Map Vietnamese status text (from sample data) to canonical keys
+    final Map<String, String> viStatusToKey = {
+      'Nhiều mây': 'cloudy',
+      'Mưa rào': 'rain',
+      'Âm u': 'overcast',
+      'Nắng nóng': 'hot',
+      'Giông bão': 'storm',
+      'Trời quang mây': 'clear',
+      'Có nắng': 'sunny',
+      'Mưa phùn': 'drizzle',
+    };
 
-    // 🔹 Dự báo 10 ngày mẫu (giữ nguyên)
+    final Map<String, Map<String, String>> statusTranslations = {
+      'cloudy': {'vi': 'Nhiều mây', 'en': 'Cloudy'},
+      'rain': {'vi': 'Mưa rào', 'en': 'Showers'},
+      'overcast': {'vi': 'Âm u', 'en': 'Overcast'},
+      'hot': {'vi': 'Nắng nóng', 'en': 'Hot'},
+      'storm': {'vi': 'Giông bão', 'en': 'Stormy'},
+      'clear': {'vi': 'Trời quang mây', 'en': 'Clear skies'},
+      'sunny': {'vi': 'Có nắng', 'en': 'Sunny'},
+      'drizzle': {'vi': 'Mưa phùn', 'en': 'Light drizzle'},
+    };
+
+    String _localizedStatus(String rawStatus) {
+      final code = Localizations.localeOf(context).languageCode;
+      String? key = viStatusToKey[rawStatus];
+      if (key == null) {
+        for (final entry in statusTranslations.entries) {
+          if (entry.value['en']?.toLowerCase() == rawStatus.toLowerCase() ||
+              entry.value['vi'] == rawStatus) {
+            key = entry.key;
+            break;
+          }
+        }
+      }
+      if (key != null) return statusTranslations[key]?[code] ?? rawStatus;
+      return rawStatus;
+    }
+
+    final String status = _localizedStatus(
+      city?['status'] ?? AppLocalizations.of(context)!.feelsLike,
+    );
+
     final List<Map<String, dynamic>> forecastData = List.generate(10, (index) {
       final date = now.add(Duration(days: index));
       final day =
-          "${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}";
+          '${date.day.toString().padLeft(2, '0')}/${date.month.toString().padLeft(2, '0')}';
 
       final icons = [
-        "assets/imgs/gioithieu2.png",
-        "assets/imgs/rain.png",
-        "assets/imgs/gioithieu3.png",
+        'assets/imgs/gioithieu2.png',
+        'assets/imgs/rain.png',
+        'assets/imgs/gioithieu3.png',
       ];
 
       return {
-        "day": day,
-        "icon": icons[index % icons.length],
-        "rainPercent": [10, 20, 40, 60, 80, 30, 50, 70, 25, 90][index],
-        "minTemp": [21, 22, 24, 23, 20, 21, 22, 25, 23, 21][index],
-        "maxTemp": [28, 30, 33, 29, 25, 27, 28, 34, 30, 26][index],
+        'day': day,
+        'icon': icons[index % icons.length],
+        'rainPercent': [10, 20, 40, 60, 80, 30, 50, 70, 25, 90][index],
+        'minTemp': [21, 22, 24, 23, 20, 21, 22, 25, 23, 21][index],
+        'maxTemp': [28, 30, 33, 29, 25, 27, 28, 34, 30, 26][index],
       };
     });
 
@@ -53,7 +91,6 @@ class WeatherPreviewScreen extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          // 🌈 Nền gradient
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -69,11 +106,9 @@ class WeatherPreviewScreen extends StatelessWidget {
             ),
           ),
 
-          // ✅ Nội dung
           SafeArea(
             child: Column(
               children: [
-                // 🔹 Thanh trên cùng: Hủy & Thêm
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
@@ -89,12 +124,10 @@ class WeatherPreviewScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(12),
                           ),
                         ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        child: const Text(
-                          "Hủy",
-                          style: TextStyle(color: Colors.white),
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(
+                          AppLocalizations.of(context)!.cancel,
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
 
@@ -108,30 +141,29 @@ class WeatherPreviewScreen extends StatelessWidget {
                         onPressed: () {
                           if (city != null) {
                             addCity({
-                              "name": city!['name'],
-                              "temp": city!['temp'],
-                              "status": city!['status'],
-                              "icon":
-                                  city!['icon'] ??
-                                  "assets/imgs/gioithieu2.png", // icon mặc định
+                              'name': city!['name'],
+                              'temp': city!['temp'],
+                              'status': city!['status'],
+                              'icon':
+                                  city!['icon'] ?? 'assets/imgs/gioithieu2.png',
                             });
 
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  "${city!['name']} đã được thêm vào danh sách yêu thích",
+                                  AppLocalizations.of(context)!.addedToFavorites
+                                      .replaceAll('{city}', city!['name']),
                                 ),
                               ),
                             );
                           }
                         },
-                        child: const Text("Thêm"),
+                        child: Text(AppLocalizations.of(context)!.add),
                       ),
                     ],
                   ),
                 ),
 
-                // 🌤 Phần còn lại là giao diện thời tiết
                 Expanded(
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
@@ -140,17 +172,14 @@ class WeatherPreviewScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          // ☀️ Icon chính hôm nay (sửa để hiện icon city)
                           Image.asset(
                             cityIcon,
                             height: size.height * 0.36,
                             fit: BoxFit.contain,
                           ),
                           const SizedBox(height: 10),
-
-                          // 🌡 Nhiệt độ chính (từ city)
                           Text(
-                            "$temp°",
+                            '$temp°',
                             style: const TextStyle(
                               fontSize: 80,
                               fontWeight: FontWeight.bold,
@@ -158,25 +187,22 @@ class WeatherPreviewScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 10),
-
-                          // 🏙️ Tên thành phố
                           Text(
-                            city?["name"] ?? "Vị trí của tôi",
+                            city?['name'] ??
+                                AppLocalizations.of(context)!.myLocation,
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 36,
                             ),
                           ),
-
                           const SizedBox(height: 6),
                           Text(
-                            "Cao: ${maxTemp}°   Thấp: ${minTemp}°",
+                            '${AppLocalizations.of(context)!.high}: ${maxTemp}°   ${AppLocalizations.of(context)!.low}: ${minTemp}°',
                             style: const TextStyle(
                               color: Colors.white60,
                               fontSize: 16,
                             ),
                           ),
-
                           const SizedBox(height: 8),
                           Text(
                             status,
@@ -185,9 +211,8 @@ class WeatherPreviewScreen extends StatelessWidget {
                               fontSize: 18,
                             ),
                           ),
-
-                          // Giữ nguyên toàn bộ phần còn lại
                           const SizedBox(height: 25),
+
                           Center(
                             child: Container(
                               width: 280,
@@ -217,7 +242,6 @@ class WeatherPreviewScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 30),
 
-                          // Giữ nguyên dự báo 24h + 10 ngày + thẻ thông tin
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 20),
                             padding: const EdgeInsets.all(16),
@@ -235,9 +259,9 @@ class WeatherPreviewScreen extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Text(
-                                      "Hôm nay",
-                                      style: TextStyle(
+                                    Text(
+                                      AppLocalizations.of(context)!.today,
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -264,18 +288,18 @@ class WeatherPreviewScreen extends StatelessWidget {
                                     itemCount: 24,
                                     itemBuilder: (context, i) {
                                       final time =
-                                          "${i.toString().padLeft(2, '0')}:00";
+                                          '${i.toString().padLeft(2, '0')}:00';
                                       final tempHour =
                                           minTemp +
                                           ((maxTemp - minTemp) * (i / 23))
                                               .round();
                                       final hourIcon = (i >= 6 && i < 18)
-                                          ? "assets/imgs/gioithieu2.png"
-                                          : "assets/imgs/gioithieu1.png";
+                                          ? 'assets/imgs/gioithieu2.png'
+                                          : 'assets/imgs/gioithieu1.png';
 
                                       return HourlyForecast(
                                         time: time,
-                                        temp: "$tempHour°C",
+                                        temp: '$tempHour°C',
                                         iconPath: hourIcon,
                                       );
                                     },
@@ -301,9 +325,9 @@ class WeatherPreviewScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  "Dự báo 10 ngày",
-                                  style: TextStyle(
+                                Text(
+                                  AppLocalizations.of(context)!.titleForecast,
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -337,53 +361,73 @@ class WeatherPreviewScreen extends StatelessWidget {
                               mainAxisSpacing: 12,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              children: const [
+                              children: [
                                 WeatherInfoCard(
-                                  title: "CẢM NHẬN",
-                                  value: "24°",
-                                  subtitle: "Mưa phùn nhẹ",
+                                  title: AppLocalizations.of(
+                                    context,
+                                  )!.feelsLike,
+                                  value: '24°',
+                                  subtitle: AppLocalizations.of(
+                                    context,
+                                  )!.feelsLike_sub,
                                   icon: Icons.thermostat,
                                 ),
                                 WeatherInfoCard(
-                                  title: "CHỈ SỐ UV",
-                                  value: "3",
-                                  subtitle: "Trung bình",
+                                  title: AppLocalizations.of(context)!.uvIndex,
+                                  value: '3',
+                                  subtitle: AppLocalizations.of(
+                                    context,
+                                  )!.uvIndex_sub,
                                   icon: Icons.wb_sunny_outlined,
                                 ),
                                 WeatherInfoCard(
-                                  title: "GIÓ",
-                                  value: "9 km/h",
-                                  subtitle: "Hướng: 341° BTB",
+                                  title: AppLocalizations.of(context)!.wind,
+                                  value: '9 km/h',
+                                  subtitle: AppLocalizations.of(
+                                    context,
+                                  )!.wind_sub,
                                   icon: Icons.air,
                                 ),
                                 WeatherInfoCard(
-                                  title: "MẶT TRỜI LẶN",
-                                  value: "17:22",
-                                  subtitle: "Mọc: 05:58",
+                                  title: AppLocalizations.of(context)!.sunset,
+                                  value: '17:22',
+                                  subtitle: AppLocalizations.of(
+                                    context,
+                                  )!.sunset_sub,
                                   icon: Icons.wb_twilight,
                                 ),
                                 WeatherInfoCard(
-                                  title: "LƯỢNG MƯA",
-                                  value: "3 mm",
-                                  subtitle: "Dự báo: 17 mm / 24h tới",
+                                  title: AppLocalizations.of(context)!.rainfall,
+                                  value: '3 mm',
+                                  subtitle: AppLocalizations.of(
+                                    context,
+                                  )!.rainfall_sub,
                                   icon: Icons.water_drop_outlined,
                                 ),
                                 WeatherInfoCard(
-                                  title: "TẦM NHÌN",
-                                  value: "15 km",
-                                  subtitle: "Tầm nhìn rõ.",
+                                  title: AppLocalizations.of(
+                                    context,
+                                  )!.visibility,
+                                  value: '15 km',
+                                  subtitle: AppLocalizations.of(
+                                    context,
+                                  )!.visibility_sub,
                                   icon: Icons.remove_red_eye_outlined,
                                 ),
                                 WeatherInfoCard(
-                                  title: "ĐỘ ẨM",
-                                  value: "85%",
-                                  subtitle: "Điểm sương 21°",
+                                  title: AppLocalizations.of(context)!.humidity,
+                                  value: '85%',
+                                  subtitle: AppLocalizations.of(
+                                    context,
+                                  )!.humidity_sub,
                                   icon: Icons.grain_outlined,
                                 ),
                                 WeatherInfoCard(
-                                  title: "ÁP SUẤT",
-                                  value: "1009 hPa",
-                                  subtitle: "Ổn định",
+                                  title: AppLocalizations.of(context)!.pressure,
+                                  value: '1009 hPa',
+                                  subtitle: AppLocalizations.of(
+                                    context,
+                                  )!.pressure_sub,
                                   icon: Icons.speed_outlined,
                                 ),
                               ],

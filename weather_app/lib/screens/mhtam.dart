@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'thoitietchinh.dart';
-
+import 'package:weather_app/l10n/app_localizations.dart';
 
 class Mhtam extends StatelessWidget {
   final Map<String, dynamic>? city;
@@ -25,7 +25,47 @@ class Mhtam extends StatelessWidget {
     final int temp = city?['temp'] ?? 28;
     final int minTemp = city?['min'] ?? 21;
     final int maxTemp = city?['max'] ?? 30;
-    final String status = city?['status'] ?? "Nhiều mây - 28°C";
+    // Map Vietnamese status text (from sample data) to canonical keys
+    final Map<String, String> viStatusToKey = {
+      'Nhiều mây': 'cloudy',
+      'Mưa rào': 'rain',
+      'Âm u': 'overcast',
+      'Nắng nóng': 'hot',
+      'Giông bão': 'storm',
+      'Trời quang mây': 'clear',
+      'Có nắng': 'sunny',
+      'Mưa phùn': 'drizzle',
+    };
+
+    final Map<String, Map<String, String>> statusTranslations = {
+      'cloudy': {'vi': 'Nhiều mây', 'en': 'Cloudy'},
+      'rain': {'vi': 'Mưa rào', 'en': 'Showers'},
+      'overcast': {'vi': 'Âm u', 'en': 'Overcast'},
+      'hot': {'vi': 'Nắng nóng', 'en': 'Hot'},
+      'storm': {'vi': 'Giông bão', 'en': 'Stormy'},
+      'clear': {'vi': 'Trời quang mây', 'en': 'Clear skies'},
+      'sunny': {'vi': 'Có nắng', 'en': 'Sunny'},
+      'drizzle': {'vi': 'Mưa phùn', 'en': 'Light drizzle'},
+    };
+
+    String _localizedStatus(String rawStatus) {
+      final code = Localizations.localeOf(context).languageCode;
+      String? key = viStatusToKey[rawStatus];
+      if (key == null) {
+        for (final entry in statusTranslations.entries) {
+          if (entry.value['en']?.toLowerCase() == rawStatus.toLowerCase() ||
+              entry.value['vi'] == rawStatus) {
+            key = entry.key;
+            break;
+          }
+        }
+      }
+      if (key != null) return statusTranslations[key]?[code] ?? rawStatus;
+      return rawStatus;
+    }
+
+    final String rawStatus = city?['status'] ?? 'Nhiều mây';
+    final String status = _localizedStatus(rawStatus);
 
     // 🔹 Dự báo 10 ngày mẫu (giữ nguyên)
     final List<Map<String, dynamic>> forecastData = List.generate(10, (index) {
@@ -92,9 +132,9 @@ class Mhtam extends StatelessWidget {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text(
-                          "Quay lại",
-                          style: TextStyle(color: Colors.white),
+                        child: Text(
+                          AppLocalizations.of(context)!.cancel,
+                          style: const TextStyle(color: Colors.white),
                         ),
                       ),
                     ],
@@ -131,7 +171,8 @@ class Mhtam extends StatelessWidget {
 
                           // 🏙️ Tên thành phố
                           Text(
-                            city?["name"] ?? "Vị trí của tôi",
+                            city?["name"] ??
+                                AppLocalizations.of(context)!.myLocation,
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 36,
@@ -140,7 +181,7 @@ class Mhtam extends StatelessWidget {
 
                           const SizedBox(height: 6),
                           Text(
-                            "Cao: ${maxTemp}°   Thấp: ${minTemp}°",
+                            "${AppLocalizations.of(context)!.high}: ${maxTemp}°   ${AppLocalizations.of(context)!.low}: ${minTemp}°",
                             style: const TextStyle(
                               color: Colors.white60,
                               fontSize: 16,
@@ -205,9 +246,9 @@ class Mhtam extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Text(
-                                      "Hôm nay",
-                                      style: TextStyle(
+                                    Text(
+                                      AppLocalizations.of(context)!.today,
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
@@ -271,9 +312,9 @@ class Mhtam extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  "Dự báo 10 ngày",
-                                  style: TextStyle(
+                                Text(
+                                  AppLocalizations.of(context)!.titleForecast,
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 20,
                                     fontWeight: FontWeight.bold,
@@ -307,53 +348,73 @@ class Mhtam extends StatelessWidget {
                               mainAxisSpacing: 12,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
-                              children: const [
+                              children: [
                                 WeatherInfoCard(
-                                  title: "CẢM NHẬN",
+                                  title: AppLocalizations.of(
+                                    context,
+                                  )!.feelsLike,
                                   value: "24°",
-                                  subtitle: "Mưa phùn nhẹ",
+                                  subtitle: AppLocalizations.of(
+                                    context,
+                                  )!.feelsLike_sub,
                                   icon: Icons.thermostat,
                                 ),
                                 WeatherInfoCard(
-                                  title: "CHỈ SỐ UV",
+                                  title: AppLocalizations.of(context)!.uvIndex,
                                   value: "3",
-                                  subtitle: "Trung bình",
+                                  subtitle: AppLocalizations.of(
+                                    context,
+                                  )!.uvIndex_sub,
                                   icon: Icons.wb_sunny_outlined,
                                 ),
                                 WeatherInfoCard(
-                                  title: "GIÓ",
+                                  title: AppLocalizations.of(context)!.wind,
                                   value: "9 km/h",
-                                  subtitle: "Hướng: 341° BTB",
+                                  subtitle: AppLocalizations.of(
+                                    context,
+                                  )!.wind_sub,
                                   icon: Icons.air,
                                 ),
                                 WeatherInfoCard(
-                                  title: "MẶT TRỜI LẶN",
+                                  title: AppLocalizations.of(context)!.sunset,
                                   value: "17:22",
-                                  subtitle: "Mọc: 05:58",
+                                  subtitle: AppLocalizations.of(
+                                    context,
+                                  )!.sunset_sub,
                                   icon: Icons.wb_twilight,
                                 ),
                                 WeatherInfoCard(
-                                  title: "LƯỢNG MƯA",
+                                  title: AppLocalizations.of(context)!.rainfall,
                                   value: "3 mm",
-                                  subtitle: "Dự báo: 17 mm / 24h tới",
+                                  subtitle: AppLocalizations.of(
+                                    context,
+                                  )!.rainfall_sub,
                                   icon: Icons.water_drop_outlined,
                                 ),
                                 WeatherInfoCard(
-                                  title: "TẦM NHÌN",
+                                  title: AppLocalizations.of(
+                                    context,
+                                  )!.visibility,
                                   value: "15 km",
-                                  subtitle: "Tầm nhìn rõ.",
+                                  subtitle: AppLocalizations.of(
+                                    context,
+                                  )!.visibility_sub,
                                   icon: Icons.remove_red_eye_outlined,
                                 ),
                                 WeatherInfoCard(
-                                  title: "ĐỘ ẨM",
+                                  title: AppLocalizations.of(context)!.humidity,
                                   value: "85%",
-                                  subtitle: "Điểm sương 21°",
+                                  subtitle: AppLocalizations.of(
+                                    context,
+                                  )!.humidity_sub,
                                   icon: Icons.grain_outlined,
                                 ),
                                 WeatherInfoCard(
-                                  title: "ÁP SUẤT",
+                                  title: AppLocalizations.of(context)!.pressure,
                                   value: "1009 hPa",
-                                  subtitle: "Ổn định",
+                                  subtitle: AppLocalizations.of(
+                                    context,
+                                  )!.pressure_sub,
                                   icon: Icons.speed_outlined,
                                 ),
                               ],

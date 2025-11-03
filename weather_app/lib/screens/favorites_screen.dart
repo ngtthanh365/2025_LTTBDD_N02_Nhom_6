@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/screens/mhtam.dart';
 import 'city_notifier.dart';
+import 'package:weather_app/l10n/app_localizations.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
@@ -14,6 +15,45 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // status translations (map Vietnamese sample data to keys)
+    final Map<String, String> viStatusToKey = {
+      'Nhiều mây': 'cloudy',
+      'Mưa rào': 'rain',
+      'Âm u': 'overcast',
+      'Nắng nóng': 'hot',
+      'Giông bão': 'storm',
+      'Trời quang mây': 'clear',
+      'Có nắng': 'sunny',
+      'Mưa phùn': 'drizzle',
+    };
+
+    final Map<String, Map<String, String>> statusTranslations = {
+      'cloudy': {'vi': 'Nhiều mây', 'en': 'Cloudy'},
+      'rain': {'vi': 'Mưa rào', 'en': 'Showers'},
+      'overcast': {'vi': 'Âm u', 'en': 'Overcast'},
+      'hot': {'vi': 'Nắng nóng', 'en': 'Hot'},
+      'storm': {'vi': 'Giông bão', 'en': 'Stormy'},
+      'clear': {'vi': 'Trời quang mây', 'en': 'Clear skies'},
+      'sunny': {'vi': 'Có nắng', 'en': 'Sunny'},
+      'drizzle': {'vi': 'Mưa phùn', 'en': 'Light drizzle'},
+    };
+
+    String _localizedStatus(BuildContext ctx, String rawStatus) {
+      final code = Localizations.localeOf(ctx).languageCode;
+      String? key = viStatusToKey[rawStatus];
+      if (key == null) {
+        for (final entry in statusTranslations.entries) {
+          if (entry.value['en']?.toLowerCase() == rawStatus.toLowerCase() ||
+              entry.value['vi'] == rawStatus) {
+            key = entry.key;
+            break;
+          }
+        }
+      }
+      if (key != null) return statusTranslations[key]?[code] ?? rawStatus;
+      return rawStatus;
+    }
+
     return Scaffold(
       backgroundColor: Colors.blue[900],
       appBar: AppBar(
@@ -23,9 +63,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Thêm thành phố',
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          AppLocalizations.of(context)!.FavoritesCity,
+          style: const TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 60, 160, 222),
@@ -38,14 +78,12 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-               
-
                 // 🔍 Search bar
                 TextField(
                   controller: _searchController,
                   style: const TextStyle(color: Colors.white),
                   decoration: InputDecoration(
-                    hintText: "Tìm kiếm thành phố...",
+                    hintText: AppLocalizations.of(context)!.searchHint,
                     hintStyle: const TextStyle(color: Colors.white70),
                     prefixIcon: const Icon(Icons.search, color: Colors.white70),
                     filled: true,
@@ -66,17 +104,18 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     builder: (context, cities, _) {
                       final query = _searchController.text.toLowerCase();
                       final filteredCities = cities
-                          .where((c) => c['name']
-                              .toString()
-                              .toLowerCase()
-                              .contains(query))
+                          .where(
+                            (c) => c['name'].toString().toLowerCase().contains(
+                              query,
+                            ),
+                          )
                           .toList();
 
                       if (filteredCities.isEmpty) {
-                        return const Center(
+                        return Center(
                           child: Text(
-                            "Chưa có thành phố yêu thích nào.",
-                            style: TextStyle(color: Colors.white70),
+                            AppLocalizations.of(context)!.noFavorites,
+                            style: const TextStyle(color: Colors.white70),
                           ),
                         );
                       }
@@ -93,8 +132,9 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                             direction: DismissDirection.endToStart,
                             background: Container(
                               alignment: Alignment.centerRight,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 24),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                              ),
                               margin: const EdgeInsets.only(bottom: 16),
                               decoration: BoxDecoration(
                                 color: Colors.redAccent.withOpacity(0.9),
@@ -110,7 +150,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                               removeCity(cityName);
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('$cityName removed'),
+                                  content: Text(
+                                    AppLocalizations.of(context)!
+                                        .removedFromFavorites
+                                        .replaceAll('{city}', cityName),
+                                  ),
                                   behavior: SnackBarBehavior.floating,
                                   duration: const Duration(seconds: 1),
                                 ),
@@ -166,7 +210,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                         ),
                                         const SizedBox(height: 4),
                                         Text(
-                                          "H:${city['high'] ?? '22'}°  L:${city['low'] ?? '10'}°",
+                                          "${AppLocalizations.of(context)!.high}: ${city['high'] ?? '22'}°   ${AppLocalizations.of(context)!.low}: ${city['low'] ?? '10'}°",
                                           style: const TextStyle(
                                             color: Colors.white70,
                                             fontSize: 13,
@@ -182,7 +226,13 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                                         ),
                                         const SizedBox(height: 2),
                                         Text(
-                                          city['status'] ?? "Unknown",
+                                          _localizedStatus(
+                                            context,
+                                            city['status'] ??
+                                                AppLocalizations.of(
+                                                  context,
+                                                )!.unknown,
+                                          ),
                                           style: const TextStyle(
                                             color: Colors.white70,
                                             fontSize: 13,

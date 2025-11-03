@@ -1,5 +1,41 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:weather_app/l10n/app_localizations.dart';
+import 'package:weather_app/main.dart';
+
+// --- Helper localization map for strings not in ARB ---
+final Map<String, Map<String, String>> _localizedExtras = {
+  'vi': {
+    'high': 'Cao',
+    'low': 'Thấp',
+    'feelsLike_sub': 'Mưa phùn nhẹ',
+    'uvIndex_sub': 'Trung bình',
+    'wind_sub': 'Hướng: 341° BTB',
+    'sunset_sub': 'Mọc: 05:58',
+    'rainfall_sub': 'Dự báo: 17 mm / 24h tới',
+    'visibility_sub': 'Tầm nhìn rõ.',
+    'humidity_sub': 'Điểm sương 21°',
+    'pressure_sub': 'Ổn định',
+  },
+  'en': {
+    'high': 'High',
+    'low': 'Low',
+    'feelsLike_sub': 'Light drizzle',
+    'uvIndex_sub': 'Moderate',
+    'wind_sub': 'Direction: 341° NNW',
+    'sunset_sub': 'Sunrise: 05:58',
+    'rainfall_sub': 'Forecast: 17 mm / next 24h',
+    'visibility_sub': 'Clear visibility.',
+    'humidity_sub': 'Dew point 21°',
+    'pressure_sub': 'Stable',
+  },
+};
+
+String _extra(BuildContext context, String key) {
+  final code = Localizations.localeOf(context).languageCode;
+  return _localizedExtras[code]?[key] ?? _localizedExtras['vi']![key] ?? '';
+}
 
 // ⚡ Thêm các trang mẫu để điều hướng
 class HomePage extends StatelessWidget {
@@ -187,17 +223,19 @@ class WeatherScreen extends StatelessWidget {
                                                   MainAxisAlignment
                                                       .spaceBetween,
                                               children: [
-                                                const Row(
+                                                Row(
                                                   children: [
-                                                    Icon(
+                                                    const Icon(
                                                       Icons.settings,
                                                       color: Colors.white,
                                                       size: 28,
                                                     ),
-                                                    SizedBox(width: 10),
+                                                    const SizedBox(width: 10),
                                                     Text(
-                                                      "Cài đặt",
-                                                      style: TextStyle(
+                                                      AppLocalizations.of(
+                                                        context,
+                                                      )!.titleSettings,
+                                                      style: const TextStyle(
                                                         color: Colors.white,
                                                         fontSize: 22,
                                                         fontWeight:
@@ -228,9 +266,11 @@ class WeatherScreen extends StatelessWidget {
                                               Icons.group,
                                               color: Colors.blueAccent,
                                             ),
-                                            title: const Text(
-                                              "Thông tin nhóm",
-                                              style: TextStyle(
+                                            title: Text(
+                                              AppLocalizations.of(
+                                                context,
+                                              )!.teamInfo,
+                                              style: const TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w500,
                                               ),
@@ -250,19 +290,18 @@ class WeatherScreen extends StatelessWidget {
                                               Icons.language,
                                               color: Colors.blueAccent,
                                             ),
-                                            title: const Text(
-                                              "Ngôn ngữ",
-                                              style: TextStyle(
+                                            title: Text(
+                                              AppLocalizations.of(
+                                                context,
+                                              )!.language,
+                                              style: const TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
                                             onTap: () {
                                               Navigator.pop(context);
-                                              Navigator.pushNamed(
-                                                context,
-                                                '/ngonngu',
-                                              );
+                                              _showLanguageSheet(context);
                                             },
                                           ),
                                         ],
@@ -311,14 +350,14 @@ class WeatherScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 10),
-                    const Text(
-                      "Vị trí của tôi",
-                      style: TextStyle(color: Colors.white, fontSize: 36),
+                    Text(
+                      AppLocalizations.of(context)!.myLocation,
+                      style: const TextStyle(color: Colors.white, fontSize: 36),
                     ),
 
                     const SizedBox(height: 6),
                     Text(
-                      "Cao: ${today['maxTemp']}°   Thấp: ${today['minTemp']}°",
+                      "${_extra(context, 'high')}: ${today['maxTemp']}°   ${_extra(context, 'low')}: ${today['minTemp']}°",
                       style: const TextStyle(
                         color: Colors.white60,
                         fontSize: 16,
@@ -369,9 +408,9 @@ class WeatherScreen extends StatelessWidget {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
-                                "Hôm nay",
-                                style: TextStyle(
+                              Text(
+                                AppLocalizations.of(context)!.today,
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
@@ -433,9 +472,9 @@ class WeatherScreen extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
-                            "Dự báo 10 ngày",
-                            style: TextStyle(
+                          Text(
+                            AppLocalizations.of(context)!.titleForecast,
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -470,53 +509,53 @@ class WeatherScreen extends StatelessWidget {
                         mainAxisSpacing: 12,
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        children: const [
+                        children: [
                           WeatherInfoCard(
-                            title: "CẢM NHẬN",
+                            title: AppLocalizations.of(context)!.feelsLike,
                             value: "24°",
-                            subtitle: "Mưa phùn nhẹ",
+                            subtitle: _extra(context, 'feelsLike_sub'),
                             icon: Icons.thermostat,
                           ),
                           WeatherInfoCard(
-                            title: "CHỈ SỐ UV",
+                            title: AppLocalizations.of(context)!.uvIndex,
                             value: "3",
-                            subtitle: "Trung bình",
+                            subtitle: _extra(context, 'uvIndex_sub'),
                             icon: Icons.wb_sunny_outlined,
                           ),
                           WeatherInfoCard(
-                            title: "GIÓ",
+                            title: AppLocalizations.of(context)!.wind,
                             value: "9 km/h",
-                            subtitle: "Hướng: 341° BTB",
+                            subtitle: _extra(context, 'wind_sub'),
                             icon: Icons.air,
                           ),
                           WeatherInfoCard(
-                            title: "MẶT TRỜI LẶN",
+                            title: AppLocalizations.of(context)!.sunset,
                             value: "17:22",
-                            subtitle: "Mọc: 05:58",
+                            subtitle: _extra(context, 'sunset_sub'),
                             icon: Icons.wb_twilight,
                           ),
                           WeatherInfoCard(
-                            title: "LƯỢNG MƯA",
+                            title: AppLocalizations.of(context)!.rainfall,
                             value: "3 mm",
-                            subtitle: "Dự báo: 17 mm / 24h tới",
+                            subtitle: _extra(context, 'rainfall_sub'),
                             icon: Icons.water_drop_outlined,
                           ),
                           WeatherInfoCard(
-                            title: "TẦM NHÌN",
+                            title: AppLocalizations.of(context)!.visibility,
                             value: "15 km",
-                            subtitle: "Tầm nhìn rõ.",
+                            subtitle: _extra(context, 'visibility_sub'),
                             icon: Icons.remove_red_eye_outlined,
                           ),
                           WeatherInfoCard(
-                            title: "ĐỘ ẨM",
+                            title: AppLocalizations.of(context)!.humidity,
                             value: "85%",
-                            subtitle: "Điểm sương 21°",
+                            subtitle: _extra(context, 'humidity_sub'),
                             icon: Icons.grain_outlined,
                           ),
                           WeatherInfoCard(
-                            title: "ÁP SUẤT",
+                            title: AppLocalizations.of(context)!.pressure,
                             value: "1009 hPa",
-                            subtitle: "Ổn định",
+                            subtitle: _extra(context, 'pressure_sub'),
                             icon: Icons.speed_outlined,
                           ),
                         ],
@@ -597,6 +636,95 @@ class WeatherScreen extends StatelessWidget {
 }
 
 // ------------------- Các widget phụ -------------------
+
+// 🗣️ Hiển thị bảng chọn ngôn ngữ (Bottom Sheet) — có lưu lại lựa chọn
+void _showLanguageSheet(BuildContext context) async {
+  final prefs = await SharedPreferences.getInstance();
+  String selectedLanguage =
+      prefs.getString('language') ?? 'vi'; // Lấy ngôn ngữ đã lưu, mặc định 'vi'
+
+  showModalBottomSheet(
+    context: context,
+    backgroundColor: Colors.white,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+    ),
+    builder: (context) {
+      return StatefulBuilder(
+        builder: (context, setState) {
+          Future<void> _setLanguage(String langCode, String message) async {
+            setState(() => selectedLanguage = langCode);
+            await prefs.setString('language', langCode); // ✅ Lưu vào bộ nhớ
+
+            // Thay đổi locale runtime bằng cách gọi hàm của MyApp
+            try {
+              MyApp.setLocale(context, Locale(langCode));
+            } catch (_) {
+              // Nếu import/call thất bại, vẫn lưu cấu hình và tiếp tục
+            }
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(message),
+                duration: const Duration(seconds: 2),
+              ),
+            );
+
+            Future.delayed(const Duration(milliseconds: 400), () {
+              Navigator.pop(context);
+            });
+          }
+
+          return Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Center(
+                  child: Text(
+                    "Chọn ngôn ngữ / Choose Language",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueAccent,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+
+                // 🇻🇳 Tiếng Việt
+                ListTile(
+                  leading: const Text("🇻🇳", style: TextStyle(fontSize: 26)),
+                  title: const Text(
+                    "Tiếng Việt",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  trailing: selectedLanguage == "vi"
+                      ? const Icon(Icons.check, color: Colors.blueAccent)
+                      : null,
+                  onTap: () => _setLanguage("vi", "Đã chọn: Tiếng Việt 🇻🇳"),
+                ),
+
+                // 🇬🇧 English
+                ListTile(
+                  leading: const Text("🇬🇧", style: TextStyle(fontSize: 26)),
+                  title: const Text("English", style: TextStyle(fontSize: 18)),
+                  trailing: selectedLanguage == "en"
+                      ? const Icon(Icons.check, color: Colors.blueAccent)
+                      : null,
+                  onTap: () => _setLanguage("en", "Selected: English 🇬🇧"),
+                ),
+
+                const SizedBox(height: 10),
+              ],
+            ),
+          );
+        },
+      );
+    },
+  );
+}
 
 class HourlyForecast extends StatelessWidget {
   final String time;

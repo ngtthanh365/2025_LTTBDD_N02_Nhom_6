@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/l10n/app_localizations.dart';
 
 class GioiThieu4Screen extends StatelessWidget {
   const GioiThieu4Screen({super.key});
@@ -20,25 +21,23 @@ class GioiThieu4Screen extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Container(
-          decoration: BoxDecoration(
-            gradient: bgGradient,
-          ),
+          decoration: BoxDecoration(gradient: bgGradient),
           child: Stack(
             children: [
               /// Ảnh icon
-            Center(
-              child: Align(
-                alignment: Alignment.topCenter,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 30),
-                  child: Image.asset(
-                    'assets/imgs/gioithieu4.png',
-                    width: 400,
+              Center(
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 30),
+                    child: Image.asset(
+                      'assets/imgs/gioithieu4.png',
+                      width: 400,
+                    ),
                   ),
                 ),
               ),
-            ),
-              
+
               Positioned(
                 top: 20,
                 left: 20,
@@ -53,7 +52,7 @@ class GioiThieu4Screen extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               Positioned(
                 top: 20,
                 right: 20,
@@ -61,9 +60,9 @@ class GioiThieu4Screen extends StatelessWidget {
                   onTap: () {
                     Navigator.pushNamed(context, '/xacdinhvitri');
                   },
-                  child: const Text(
-                    "Bỏ qua",
-                    style: TextStyle(
+                  child: Text(
+                    AppLocalizations.of(context)!.skip,
+                    style: const TextStyle(
                       color: Colors.white,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -77,28 +76,31 @@ class GioiThieu4Screen extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 40,
+                  ),
                   decoration: const BoxDecoration(
                     color: Colors.white,
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(250)),
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(250),
+                    ),
                   ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Text(
-                        "Bản Đồ Nhiệt Độ\n"
-                        "Chi Tiết",
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 60, 160, 222)),
-                            textAlign: TextAlign.center,
+                      Text(
+                        AppLocalizations.of(context)!.intro4Title,
+                        style: const TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 60, 160, 222),
+                        ),
+                        textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        "Bản đồ thông báo nhiệt độ\n"
-                        "theo từng khu vực.",
+                        AppLocalizations.of(context)!.intro4Desc,
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.grey.shade600,
@@ -108,7 +110,7 @@ class GioiThieu4Screen extends StatelessWidget {
                       const SizedBox(height: 40),
 
                       /// Button -> sang main app
-                     GestureDetector(
+                      GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(context, "/xacdinhvitri");
                         },
@@ -117,13 +119,18 @@ class GioiThieu4Screen extends StatelessWidget {
                           height: 70,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Color.fromARGB(255, 60, 160, 222), // Màu xanh dương nổi bật
+                            color: Color.fromARGB(
+                              255,
+                              60,
+                              160,
+                              222,
+                            ), // Màu xanh dương nổi bật
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.black.withOpacity(0.15),
                                 blurRadius: 8,
                                 offset: Offset(0, 4),
-                              )
+                              ),
                             ],
                           ),
                           child: const Icon(
@@ -133,7 +140,6 @@ class GioiThieu4Screen extends StatelessWidget {
                           ),
                         ),
                       ),
-
                     ],
                   ),
                 ),

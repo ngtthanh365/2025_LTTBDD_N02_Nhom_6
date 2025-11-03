@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/l10n/app_localizations.dart';
 
 class ModauScreen extends StatelessWidget {
   const ModauScreen({super.key});
@@ -9,9 +10,9 @@ class ModauScreen extends StatelessWidget {
       begin: Alignment.topCenter,
       end: Alignment.bottomCenter,
       colors: [
-        Color.fromARGB(255, 4, 102, 239), 
-        Color.fromARGB(255, 60, 160, 222), 
-        Color.fromARGB(255, 218, 227, 234), 
+        Color.fromARGB(255, 4, 102, 239),
+        Color.fromARGB(255, 60, 160, 222),
+        Color.fromARGB(255, 218, 227, 234),
       ],
       stops: [0.0, 0.6, 1.0],
     );
@@ -20,9 +21,7 @@ class ModauScreen extends StatelessWidget {
       backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Container(
-          decoration: BoxDecoration(
-            gradient: bgGradient,
-          ),
+          decoration: BoxDecoration(gradient: bgGradient),
           child: Stack(
             children: [
               // Positioned illustration near top
@@ -47,13 +46,16 @@ class ModauScreen extends StatelessWidget {
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 28.0, vertical: 36.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 28.0,
+                    vertical: 36.0,
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       // Title: 2 lines, different styles
                       Text(
-                        'Ứng Dụng Dự Báo',
+                        AppLocalizations.of(context)!.splashLine1,
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 38,
@@ -64,13 +66,13 @@ class ModauScreen extends StatelessWidget {
                               color: Colors.black.withOpacity(0.25),
                               blurRadius: 8,
                               offset: const Offset(0, 4),
-                            )
+                            ),
                           ],
                         ),
                       ),
                       const SizedBox(height: 6),
                       Text(
-                        'Thời Tiết',
+                        AppLocalizations.of(context)!.splashLine2,
                         style: TextStyle(
                           color: const Color(0xFFFFC107), // warm yellow
                           fontSize: 40,
@@ -87,7 +89,7 @@ class ModauScreen extends StatelessWidget {
                         height: 52,
                         child: ElevatedButton(
                           onPressed: () {
-                             // chuyển sang màn hình giới thiệu 1
+                            // chuyển sang màn hình giới thiệu 1
                             Navigator.pushNamed(context, '/gioithieu1');
                           },
                           style: ElevatedButton.styleFrom(
@@ -98,9 +100,9 @@ class ModauScreen extends StatelessWidget {
                             ),
                             shadowColor: Colors.black.withOpacity(0.3),
                           ),
-                          child: const Text(
-                            'Bắt Đầu',
-                            style: TextStyle(
+                          child: Text(
+                            AppLocalizations.of(context)!.start,
+                            style: const TextStyle(
                               color: Color(0xFF2A2A6A), // dark text on yellow
                               fontSize: 18,
                               fontWeight: FontWeight.w700,

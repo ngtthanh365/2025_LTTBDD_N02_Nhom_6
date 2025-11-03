@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/l10n/app_localizations.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -23,12 +24,12 @@ class _BanDoNhietDoState extends State<BanDoNhietDo> {
             Navigator.pop(context);
           },
         ),
-        title: const Text(
-          'Bản đồ thời tiết',
-          style: TextStyle(color: Colors.white),
+        title: Text(
+          AppLocalizations.of(context)!.mapTitle,
+          style: const TextStyle(color: Colors.white),
         ),
         centerTitle: true,
-        backgroundColor: Color.fromARGB(255, 60, 160, 222), 
+        backgroundColor: Color.fromARGB(255, 60, 160, 222),
         elevation: 2, // tạo hiệu ứng nổi nhẹ
       ),
       body: Stack(
@@ -78,9 +79,9 @@ class _BanDoNhietDoState extends State<BanDoNhietDo> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text(
-                      'Nhiệt độ',
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                    Text(
+                      AppLocalizations.of(context)!.legendTemperature,
+                      style: const TextStyle(fontSize: 16, color: Colors.white),
                     ),
                     const SizedBox(height: 8),
 

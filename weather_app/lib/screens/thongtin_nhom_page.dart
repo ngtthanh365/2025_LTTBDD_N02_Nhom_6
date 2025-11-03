@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:weather_app/l10n/app_localizations.dart';
 
 class ThongTinNhomPage extends StatelessWidget {
   const ThongTinNhomPage({super.key});
@@ -8,9 +9,9 @@ class ThongTinNhomPage extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        title: const Text(
-          "Thông tin nhóm",
-          style: TextStyle(
+        title: Text(
+          AppLocalizations.of(context)!.teamInfo,
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 22,
             color: Colors.white,
@@ -48,10 +49,10 @@ class ThongTinNhomPage extends StatelessWidget {
                 const SizedBox(height: 15),
 
                 // 🌟 Tiêu đề
-                const Text(
-                  "NHÓM 6 - MÔN LẬP TRÌNH DI ĐỘNG",
+                Text(
+                  AppLocalizations.of(context)!.groupHeader,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
@@ -63,11 +64,12 @@ class ThongTinNhomPage extends StatelessWidget {
 
                 // 🧑‍💻 Thành viên 1
                 _buildThanhVienCard(
+                  context,
                   name: "Nguyễn Huy Hoàng",
                   mssv: "23010143",
                   lop: "K17_CNTT2",
                   email: "23010143@st.phenikaa-uni.edu.vn",
-                  role: "Thành viên",
+                  role: AppLocalizations.of(context)!.memberRole,
                   image:
                       "https://cdn-icons-png.flaticon.com/512/3135/3135715.png",
                 ),
@@ -76,11 +78,12 @@ class ThongTinNhomPage extends StatelessWidget {
 
                 // 👩‍💻 Thành viên 2
                 _buildThanhVienCard(
+                  context,
                   name: "Nguyễn Tuấn Thành",
                   mssv: "23010626",
                   lop: "K17_CNTT7",
                   email: "23010626@st.phenikaa-uni.edu.vn",
-                  role: "Thành viên",
+                  role: AppLocalizations.of(context)!.memberRole,
                   image:
                       "https://cdn-icons-png.flaticon.com/512/219/219970.png",
                 ),
@@ -96,10 +99,10 @@ class ThongTinNhomPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(18),
                     border: Border.all(color: Colors.white30, width: 1),
                   ),
-                  child: const Text(
-                    "Đại học Phenikaa\n© 2025 - Nhóm 6",
+                  child: Text(
+                    AppLocalizations.of(context)!.footer,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Colors.white70,
                       fontSize: 14,
                       fontStyle: FontStyle.italic,
@@ -115,7 +118,8 @@ class ThongTinNhomPage extends StatelessWidget {
   }
 
   // 🟦 Hàm dựng thẻ thông tin thành viên (đẹp & có hiệu ứng bóng)
-  Widget _buildThanhVienCard({
+  Widget _buildThanhVienCard(
+    BuildContext context, {
     required String name,
     required String mssv,
     required String lop,
@@ -181,15 +185,15 @@ class ThongTinNhomPage extends StatelessWidget {
                 ),
                 const Divider(height: 16, color: Colors.blueAccent),
                 Text(
-                  "📘 MSSV: $mssv",
+                  "📘 ${AppLocalizations.of(context)!.mssvLabel}: $mssv",
                   style: const TextStyle(fontSize: 15, color: Colors.black87),
                 ),
                 Text(
-                  "🏫 Lớp: $lop",
+                  "🏫 ${AppLocalizations.of(context)!.classLabel}: $lop",
                   style: const TextStyle(fontSize: 15, color: Colors.black87),
                 ),
                 Text(
-                  "📧 Email: $email",
+                  "📧 ${AppLocalizations.of(context)!.emailLabel}: $email",
                   style: const TextStyle(fontSize: 15, color: Colors.black87),
                 ),
               ],
