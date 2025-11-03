@@ -13,6 +13,7 @@ import 'screens/gioithieu1.dart';
 import 'screens/gioithieu2.dart';
 import 'screens/gioithieu3.dart';
 import 'screens/gioithieu4.dart';
+import 'screens/thongtin_nhom_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -41,6 +42,7 @@ class MyApp extends StatelessWidget {
         '/weather_preview_screen': (context) => WeatherPreviewScreen(city: {}),
         '/favorites_screen': (context) => const FavoritesScreen(),
         '/mhtam': (context) => const Mhtam(),
+        '/thongtin_nhom': (context) => const ThongTinNhomPage(),
         // '/home': (context) => const HomeScreen(), // nếu sau này cần
       },
       theme: ThemeData(useMaterial3: true),

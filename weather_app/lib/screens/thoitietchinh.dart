@@ -124,6 +124,176 @@ class WeatherScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    // 🛠️ Nút mở trang cài đặt ở góc phải
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 16, top: 8),
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.settings,
+                            color: Colors.white,
+                            size: 32,
+                          ),
+                          onPressed: () {
+                            showGeneralDialog(
+                              context: context,
+                              barrierLabel: "Cài đặt",
+                              barrierDismissible: true,
+                              barrierColor: Colors.black54, // 🌫 Nền mờ
+                              transitionDuration: const Duration(
+                                milliseconds: 300,
+                              ),
+                              pageBuilder: (context, anim1, anim2) {
+                                return Align(
+                                  alignment: Alignment.centerRight,
+                                  child: Material(
+                                    // ✅ Quan trọng: giúp ListTile không lỗi
+                                    color: Colors.transparent,
+                                    child: Container(
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          0.7,
+                                      height: double.infinity,
+                                      decoration: const BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.only(
+                                          topLeft: Radius.circular(30),
+                                          bottomLeft: Radius.circular(30),
+                                        ),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black26,
+                                            blurRadius: 10,
+                                            offset: Offset(-4, 0),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          // 🟦 Thanh tiêu đề
+                                          Container(
+                                            padding: const EdgeInsets.all(20),
+                                            decoration: const BoxDecoration(
+                                              color: Color(0xFF3A7BD5),
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(30),
+                                              ),
+                                            ),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                const Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.settings,
+                                                      color: Colors.white,
+                                                      size: 28,
+                                                    ),
+                                                    SizedBox(width: 10),
+                                                    Text(
+                                                      "Cài đặt",
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 22,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                // ❌ Nút đóng
+                                                GestureDetector(
+                                                  onTap: () =>
+                                                      Navigator.pop(context),
+                                                  child: const Icon(
+                                                    Icons.close,
+                                                    color: Colors.white,
+                                                    size: 26,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+
+                                          const SizedBox(height: 10),
+
+                                          // 🧑‍💻 Thông tin nhóm
+                                          ListTile(
+                                            leading: const Icon(
+                                              Icons.group,
+                                              color: Colors.blueAccent,
+                                            ),
+                                            title: const Text(
+                                              "Thông tin nhóm",
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                              Navigator.pushNamed(
+                                                context,
+                                                '/thongtin_nhom',
+                                              );
+                                            },
+                                          ),
+
+                                          // 🌐 Ngôn ngữ
+                                          ListTile(
+                                            leading: const Icon(
+                                              Icons.language,
+                                              color: Colors.blueAccent,
+                                            ),
+                                            title: const Text(
+                                              "Ngôn ngữ",
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                              ),
+                                            ),
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                              Navigator.pushNamed(
+                                                context,
+                                                '/ngonngu',
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                              // 🎞 Hiệu ứng trượt từ phải sang
+                              transitionBuilder:
+                                  (context, anim1, anim2, child) {
+                                    return SlideTransition(
+                                      position:
+                                          Tween(
+                                            begin: const Offset(1, 0),
+                                            end: Offset.zero,
+                                          ).animate(
+                                            CurvedAnimation(
+                                              parent: anim1,
+                                              curve: Curves.easeOutCubic,
+                                            ),
+                                          ),
+                                      child: child,
+                                    );
+                                  },
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+
                     // ☀️ Icon chính hôm nay
                     Image.asset(
                       todayIcon,
