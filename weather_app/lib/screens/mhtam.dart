@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'thoitietchinh.dart';
-import 'city_notifier.dart';
 
-class WeatherPreviewScreen extends StatelessWidget {
+
+class Mhtam extends StatelessWidget {
   final Map<String, dynamic>? city;
-  const WeatherPreviewScreen({super.key, this.city});
+  const Mhtam({super.key, this.city});
 
   @override
   Widget build(BuildContext context) {
@@ -93,39 +93,9 @@ class WeatherPreviewScreen extends StatelessWidget {
                           Navigator.pop(context);
                         },
                         child: const Text(
-                          "Hủy",
+                          "Quay lại",
                           style: TextStyle(color: Colors.white),
                         ),
-                      ),
-
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        onPressed: () {
-                          if (city != null) {
-                            addCity({
-                              "name": city!['name'],
-                              "temp": city!['temp'],
-                              "status": city!['status'],
-                              "icon":
-                                  city!['icon'] ??
-                                  "assets/imgs/gioithieu2.png", // icon mặc định
-                            });
-
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  "${city!['name']} đã được thêm vào danh sách yêu thích",
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                        child: const Text("Thêm"),
                       ),
                     ],
                   ),

@@ -412,12 +412,7 @@ class WeatherScreen extends StatelessWidget {
                         size: 30,
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SettingsPage(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/favorites_screen');
                       },
                     ),
                   ],

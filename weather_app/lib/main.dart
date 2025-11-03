@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app/screens/bando_nhietdo.dart';
+import 'package:weather_app/screens/favorites_screen.dart';
+import 'package:weather_app/screens/mhtam.dart';
 import 'package:weather_app/screens/thoitietchinh.dart';
 import 'package:weather_app/screens/timkiem_thoitiet.dart';
 import 'package:weather_app/screens/weather_preview_screen.dart';
@@ -22,7 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Weather Onboarding',
+      title: 'Weather Forecast App',
       debugShowCheckedModeBanner: false,
       // Ghi route ở đây
       initialRoute: '/modau',
@@ -36,7 +38,9 @@ class MyApp extends StatelessWidget {
         '/thoitietchinh': (context) => const WeatherScreen(),
         '/bando_nhietdo': (context) => const BanDoNhietDo(),
         '/timkien_thoitiet': (context) => const TimKiemThanhPho(),
-        '/weather_preview': (context) => WeatherPreviewScreen(city: {}),
+        '/weather_preview_screen': (context) => WeatherPreviewScreen(city: {}),
+        '/favorites_screen': (context) => const FavoritesScreen(),
+        '/mhtam': (context) => const Mhtam(),
         // '/home': (context) => const HomeScreen(), // nếu sau này cần
       },
       theme: ThemeData(useMaterial3: true),
