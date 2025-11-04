@@ -66,19 +66,19 @@
 Một vài màn hình tiêu biểu:
 
 - **Màn hình mở đầu**  
-![alt text](<Ảnh chụp màn hình 2025-11-04 212732.png>)
+![!\[anh_demo\]</mhmodau.png>](anh_demo/mhmodau.png)
 
 - **Màn hình chính**
-![alt text](<Ảnh chụp màn hình 2025-11-04 212732-1.png>)
+![alt text](anh_demo/mhchinh.png)
 
 - **Màn hình bản đồ thời tiết**
-![alt text](<Ảnh chụp màn hình 2025-11-04 212732-2.png>)
+![alt text](anh_demo/mhbando.png)
 
 - **Màn hình tìm kiếm thành phố**  
-![alt text](<Ảnh chụp màn hình 2025-11-04 213000.png>)
+![alt text](anh_demo/mhtimkiem.png)
 
 - **Màn hình danh sách yêu thích**  
-![alt text](<Ảnh chụp màn hình 2025-11-04 213104.png>)
+![alt text](anh_demo/mhdsyt.png)
 
 ---
 
