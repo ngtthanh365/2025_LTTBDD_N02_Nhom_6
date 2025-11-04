@@ -69,16 +69,16 @@ Một vài màn hình tiêu biểu:
 ![!\[anh_demo\]</mhmodau.png>](anh_demo/mhmodau.png)
 
 - **Màn hình chính**
-![alt text](anh_demo/mhchinh.png)
+![!\[anh_demo\]</mhchinh.png>](anh_demo/mhchinh.png)
 
 - **Màn hình bản đồ thời tiết**
-![alt text](anh_demo/mhbando.png)
+![!\[anh_demo\]</mhbando.png>](anh_demo/mhbando.png)
 
 - **Màn hình tìm kiếm thành phố**  
-![alt text](anh_demo/mhtimkiem.png)
+![!\[anh_demo\]</mhtimkiem.png>](anh_demo/mhtimkiem.png)
 
 - **Màn hình danh sách yêu thích**  
-![alt text](anh_demo/mhdsyt.png)
+![!\[anh_demo\]</mhdsyt.png>](anh_demo/mhdsyt.png)
 
 ---
 
