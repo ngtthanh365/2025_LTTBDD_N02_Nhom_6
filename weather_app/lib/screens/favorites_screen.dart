@@ -13,6 +13,32 @@ class FavoritesScreen extends StatefulWidget {
 class _FavoritesScreenState extends State<FavoritesScreen> {
   final TextEditingController _searchController = TextEditingController();
 
+  // ✅ Hàm mở chi tiết thành phố với hiệu ứng phóng to dần
+  void _showCityPreview(Map<String, dynamic> city) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 500),
+        reverseTransitionDuration: const Duration(milliseconds: 400),
+        pageBuilder: (context, animation, secondaryAnimation) => Mhtam(city: city),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          final curvedAnimation = CurvedAnimation(
+            parent: animation,
+            curve: Curves.easeOutBack, // hiệu ứng phóng to mềm mại
+            reverseCurve: Curves.easeInBack,
+          );
+
+          return FadeTransition(
+            opacity: animation,
+            child: ScaleTransition(
+              scale: Tween<double>(begin: 0.85, end: 1.0).animate(curvedAnimation),
+              child: child,
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // status translations (map Vietnamese sample data to keys)
@@ -73,8 +99,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             fontSize: 20,
           ),
         ),
-        centerTitle: false, // ✅ Cho phép tiêu đề lệch trái (gần icon)
-        titleSpacing: -8, // ✅ Giảm khoảng cách giữa icon và chữ
+        centerTitle: false,
+        titleSpacing: -8,
       ),
       body: Container(
         child: SafeArea(
@@ -166,14 +192,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                               );
                             },
                             child: GestureDetector(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => Mhtam(city: city),
-                                  ),
-                                );
-                              },
+                              // ✅ Thay bằng hàm có hiệu ứng animation
+                              onTap: () => _showCityPreview(city),
                               child: Container(
                                 margin: const EdgeInsets.only(bottom: 16),
                                 decoration: BoxDecoration(

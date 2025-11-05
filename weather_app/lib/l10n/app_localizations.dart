@@ -200,6 +200,9 @@ abstract class AppLocalizations {
   /// **'Add'**
   String get add;
 
+   /// **'Back'**
+  String get back;
+
   /// **'{city} has been added to favorites'**
   String get addedToFavorites;
 

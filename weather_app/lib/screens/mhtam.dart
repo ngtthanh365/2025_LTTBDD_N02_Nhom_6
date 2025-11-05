@@ -113,7 +113,7 @@ class Mhtam extends StatelessWidget {
           SafeArea(
             child: Column(
               children: [
-                // 🔹 Thanh trên cùng: Hủy & Thêm
+                // 🔹 Thanh trên cùng
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 20,
@@ -133,7 +133,7 @@ class Mhtam extends StatelessWidget {
                           Navigator.pop(context);
                         },
                         child: Text(
-                          AppLocalizations.of(context)!.cancel,
+                          AppLocalizations.of(context)!.back,
                           style: const TextStyle(color: Colors.white),
                         ),
                       ),

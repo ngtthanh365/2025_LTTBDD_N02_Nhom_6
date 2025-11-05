@@ -38,6 +38,7 @@
     "searchHint": "Enter city name...",
     "cancel": "Cancel",
     "add": "Add",
+    "back": "Back"
     "addedToFavorites": "{city} has been added to favorites",
     "high": "High",
     "low": "Low",

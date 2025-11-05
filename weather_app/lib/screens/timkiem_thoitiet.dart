@@ -163,11 +163,32 @@ class _TimKiemThanhPhoState extends State<TimKiemThanhPho> {
   }
 
   void _showCityPreview(Map<String, dynamic> city) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => WeatherPreviewScreen(city: city)),
-    );
-  }
+  Navigator.of(context).push(
+    PageRouteBuilder(
+      transitionDuration: const Duration(milliseconds: 450),
+      pageBuilder: (context, animation, secondaryAnimation) =>
+          WeatherPreviewScreen(city: city),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        const begin = Offset(0.0, 1.0); // Bắt đầu từ dưới màn hình
+        const end = Offset.zero; // Dừng ở vị trí gốc
+        const curve = Curves.easeOutCubic; // Đường cong trượt mượt mà
+
+        final tween = Tween(begin: begin, end: end)
+            .chain(CurveTween(curve: curve)); // Kết hợp tween + curve
+        final offsetAnimation = animation.drive(tween);
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: FadeTransition( // ✅ Thêm hiệu ứng mờ dần
+            opacity: animation,
+            child: child,
+          ),
+        );
+      },
+    ),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {

@@ -113,6 +113,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get add => 'Add';
 
   @override
+  String get back => 'Back';
+
+  @override
   String get addedToFavorites => '{city} has been added to favorites';
 
   @override

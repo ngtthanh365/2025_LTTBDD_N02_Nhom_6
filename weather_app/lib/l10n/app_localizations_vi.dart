@@ -115,6 +115,9 @@ class AppLocalizationsVi extends AppLocalizations {
   String get add => 'Thêm';
 
   @override
+  String get back => 'Quay lại';
+
+  @override
   String get addedToFavorites => '{city} đã được thêm vào danh sách yêu thích';
 
   @override
